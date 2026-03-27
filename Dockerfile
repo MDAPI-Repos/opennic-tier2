@@ -22,7 +22,7 @@ WORKDIR /etc/bind
 COPY srvzone srvzone.conf ./
 RUN ./srvzone -d
 
-RUN mkdir -p /var/cache/bind/opennic/{slave,master} && chown -R bind:bind /var/cache/bind/opennic
+RUN mkdir -p /var/cache/bind/opennic/slave /var/cache/bind/opennic/master && chown -R bind:bind /var/cache/bind/opennic
 RUN ./srvzone || true
 
 RUN echo 'include "/etc/bind/named.conf.opennic";' >> named.conf
