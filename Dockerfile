@@ -19,5 +19,9 @@ WORKDIR /root
 COPY . .
 RUN ./srvzone -d
 
+WORKDIR /etc/bind
+RUN echo 'include "/etc/bind/named.conf.opennic";' >> named.conf
+RUN truncate -s 0 named.conf.root-hints
+
 ENTRYPOINT ["/sbin/init"]
 CMD ["systemctl"]
