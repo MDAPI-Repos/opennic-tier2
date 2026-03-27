@@ -15,13 +15,15 @@ ENV PACKAGES="\
 
 RUN apt update -y && apt install -y --no-install-recommends $PACKAGES && apt clean all
 
-WORKDIR /root
-COPY . .
+WORKDIR /etc/bind
+
+COPY srvzone srvzone.conf ./
 RUN ./srvzone -d
 
-WORKDIR /etc/bind
 RUN echo 'include "/etc/bind/named.conf.opennic";' >> named.conf
 RUN truncate -s 0 named.conf.root-hints
 
+RUN echo '20 * * * * root /etc/bind/srvzone' >> /etc/crontab
+
 ENTRYPOINT ["/sbin/init"]
-CMD ["/etc/init.d/named","start"]
+CMD ["sh","-c","service named start && service cron start"]
