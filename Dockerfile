@@ -24,4 +24,4 @@ RUN echo 'include "/etc/bind/named.conf.opennic";' >> named.conf
 RUN truncate -s 0 named.conf.root-hints
 
 ENTRYPOINT ["/sbin/init"]
-CMD ["systemctl"]
+CMD ["/etc/init.d/named","start"]
