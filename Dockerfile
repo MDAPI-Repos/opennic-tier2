@@ -15,6 +15,8 @@ ENV PACKAGES="\
 
 RUN apt update -y && apt install -y --no-install-recommends $PACKAGES && apt clean all
 
+RUN systemctl enable cron named
+
 WORKDIR /etc/bind
 
 COPY srvzone srvzone.conf ./
@@ -26,4 +28,3 @@ RUN truncate -s 0 named.conf.root-hints
 RUN echo '20 * * * * root /etc/bind/srvzone' >> /etc/crontab
 
 ENTRYPOINT ["/sbin/init"]
-CMD ["sh","-c","service named start && service cron start"]
