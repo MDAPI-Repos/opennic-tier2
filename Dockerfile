@@ -15,19 +15,18 @@ ENV PACKAGES="\
 
 RUN apt update -y && apt install -y --no-install-recommends $PACKAGES && apt clean all
 
-RUN systemctl enable --now cron named
+RUN systemctl enable cron named
 
 WORKDIR /etc/bind
-
-RUN mkdir -p /var/cache/bind/opennic/{slave,master} && chown -R bind:bind /var/cache/bind/opennic
 
 COPY srvzone srvzone.conf ./
 RUN ./srvzone -d
 
+RUN mkdir -p /var/cache/bind/opennic/{slave,master} && chown -R bind:bind /var/cache/bind/opennic
+RUN ./srvzone || true
+
 RUN echo 'include "/etc/bind/named.conf.opennic";' >> named.conf
 RUN truncate -s 0 named.conf.root-hints
-
-RUN ./srvzone
 
 RUN echo '20 * * * * root /etc/bind/srvzone' >> /etc/crontab
 
