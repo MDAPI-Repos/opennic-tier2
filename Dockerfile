@@ -10,12 +10,16 @@ ENV PACKAGES="\
   systemd \
   iptraf-ng \
   less \
+  iptables \
+  iptables-persistent \
 "\
   DEBIAN_FRONTEND=noninteractive
 
 RUN apt update -y && apt install -y --no-install-recommends $PACKAGES && apt clean all
 
-RUN systemctl enable cron named
+COPY iptables.rules /etc/iptables/rules.v4
+
+RUN systemctl enable cron named iptables
 
 WORKDIR /etc/bind
 
