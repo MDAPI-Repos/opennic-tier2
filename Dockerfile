@@ -6,6 +6,8 @@ ENV PACKAGES="\
   bind9-dnsutils \
   ca-certificates \
   cron \
+  dialog \
+  procps \
 "
 
 RUN apt update
@@ -14,5 +16,3 @@ RUN apt install -y --no-install-recommends $PACKAGES
 WORKDIR /root
 COPY . .
 RUN ./srvzone -d
-
-CMD ["sleep", "infinity"]
