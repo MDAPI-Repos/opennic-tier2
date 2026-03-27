@@ -19,7 +19,7 @@ RUN apt update -y && apt install -y --no-install-recommends $PACKAGES && apt cle
 
 COPY iptables.rules /etc/iptables/rules.v4
 
-RUN systemctl enable cron named iptables
+RUN systemctl enable cron named netfilter-persisitent
 
 WORKDIR /etc/bind
 
