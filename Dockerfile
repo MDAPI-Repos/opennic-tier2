@@ -8,11 +8,16 @@ ENV PACKAGES="\
   cron \
   dialog \
   procps \
+  systemctl \
+  init \
+  iptraf-ng \
 "
 
-RUN apt update
-RUN apt install -y --no-install-recommends $PACKAGES
+RUN apt update -y && apt install -y --no-install-recommends $PACKAGES && apt clean all
 
 WORKDIR /root
 COPY . .
 RUN ./srvzone -d
+
+ENTRYPOINT ["/sbin/init"]
+CMD ["systemctl"]
