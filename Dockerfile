@@ -21,6 +21,8 @@ COPY iptables.rules /etc/iptables/rules.v4
 
 RUN systemctl enable cron named netfilter-persistent
 
+RUN bash -c "systemctl mask getty@tty{1,2,3,4,5,6}"
+
 WORKDIR /etc/bind
 
 COPY srvzone srvzone.conf ./
