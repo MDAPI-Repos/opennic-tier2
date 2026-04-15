@@ -32,7 +32,7 @@ RUN mkdir -p /var/cache/bind/opennic/slave /var/cache/bind/opennic/master && cho
 RUN ./srvzone || true
 
 RUN echo 'include "/etc/bind/named.conf.opennic";' >> named.conf
-RUN echo 'options { allow-recursion { any; }; allow-query { any; }; };' >> named.conf
+RUN echo 'options { directory "/var/cache/bind"; allow-recursion { any; }; };' > named.conf.options
 RUN truncate -s 0 named.conf.root-hints
 
 RUN echo '20 * * * * root /etc/bind/srvzone' >> /etc/crontab
